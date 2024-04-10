@@ -23,6 +23,7 @@ export const useDatastore = defineStore({
     actions: {
         setPersona(persona: Array<string>) {
             this.persona = persona;
+            localStorage.setItem("persona", JSON.stringify(persona));
             console.log(this.persona);
         },
         setMessage(message: string) {

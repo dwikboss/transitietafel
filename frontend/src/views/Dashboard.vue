@@ -92,13 +92,28 @@ export default defineComponent({
   methods: {
     async fetchArticles() {
       const datastore = useDatastore();
-      try {
-        const persona = {
-          description: datastore.getPersona[0],
-          location: datastore.getPersona[1],
-          interests: [datastore.getPersona[2]],
-        };
+      let storagePersona;
+      let persona;
 
+      try {
+        if (localStorage.getItem('persona')) {
+          console.log();
+          storagePersona = JSON.parse(localStorage.getItem('persona') || '{}');
+
+          persona = {
+            description: storagePersona[0],
+            location: storagePersona[1],
+            interests: [storagePersona[2]],
+          };
+        } else {
+          persona = {
+            description: datastore.getPersona[0],
+            location: datastore.getPersona[1],
+            interests: [datastore.getPersona[2]],
+          };
+        }
+
+        console.log(persona);
         const response = await axios.post('https://avoord-transitietafel-api-acc.lwdev.nl/api/relevantarticles', {
           persona,
         });

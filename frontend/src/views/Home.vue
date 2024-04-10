@@ -16,8 +16,13 @@ export default defineComponent({
   name: 'HomeView',
   components: {
     AppHeader,
-    Onboarding
-  }
+    Onboarding,
+  },
+  mounted() {
+    if (localStorage.getItem('persona')) {
+      this.$router.push('/dashboard');
+    }
+  },
 });
 </script>
 
