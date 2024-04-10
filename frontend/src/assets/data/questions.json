@@ -1,0 +1,81 @@
+[
+    {
+        "id": 1,
+        "question_lead": "Hi, ik ben [x] en help je met al je vragen over dementie en eenzaamheid.",
+        "question": "Hoe wil je starten?",
+        "type": "multiple-choice",
+        "options": [
+            {
+                "text": "Direct een vraag stellen",
+                "icon": "icon_qm.png",
+                "color": "#CE7030",
+                "size": "wide",
+                "tag": null
+            },
+            {
+                "text": "Help me stap voor stap",
+                "icon": "icon_qm_2.png",
+                "color": "#1977A4",
+                "size": "wide",
+                "tag": null
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "question_lead": "In 3 stappen help ik je met het vaststellen van een vraag.",
+        "question": "Allereerst, hoe beschrijf je jezelf?",
+        "type": "multiple-choice",
+        "options": [
+            {
+                "text": "Ik heb zelf hulp nodig",
+                "icon": null,
+                "color": "#CE7030",
+                "size": "regular",
+                "tag": "zorgzoekend"
+            },
+            {
+                "text": "Ik help iemand anders",
+                "icon": null,
+                "color": "#CE7030",
+                "size": "regular",
+                "tag": "mantelzorger"
+            },
+            {
+                "text": "Ik ben een professional",
+                "icon": null,
+                "color": "#CE7030",
+                "size": "regular",
+                "tag": "medisch professional"
+            }
+        ]
+    },
+    {
+        "id": 3,
+        "question_lead": "Fijn dat ik je kan helpen.",
+        "question": "Waar woon je?",
+        "type": "text"
+    },
+    {
+        "id": 4,
+        "question_lead": "Bedankt. De omgeving '{{city}}' nemen we mee in ons advies.",
+        "question": "Tot slot, waar zit de grootste zorgvraag?",
+        "type": "multiple-choice",
+        "options": [
+            {
+                "text": "Vergeetachtig",
+                "icon": "icon_qm.png",
+                "color": "#CE7030",
+                "size": "wide",
+                "tag": "dementie"
+            },
+            {
+                "text": "Eenzaamheid",
+                "icon": "icon_qm_2.png",
+                "color": "#1977A4",
+                "size": "wide",
+                "tag": "eenzaamheid"
+            }
+        ]
+    }
+]
