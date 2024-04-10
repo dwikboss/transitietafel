@@ -128,7 +128,6 @@ export default defineComponent({
     },
     submitTextAnswer(input: string) {
       const datastore = useDatastore();
-
       if (input.trim() !== '') {
         datastore.setMessage(input);
         console.log(input);

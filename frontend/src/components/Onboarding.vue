@@ -17,14 +17,13 @@
     </div>
     <div class="answer-box">
       <p>{{ answerPrompt }}</p>
-      <div class="answers" v-if="currentQuestion.type !== 'text'">
+      <div class="answers" v-if="currentQuestion.type == 'multiple-choice'">
         <div
           v-for="(option, index) in currentQuestion.options"
           :key="index"
           :class="{ 'single-mp': true, wide: option.size === 'wide' }"
           :style="{ backgroundColor: option.color }"
           @click="selectOption(option)"
-          :data-tag="option.tag"
         >
           <img class="icon_question" v-if="option.icon" :src="`/images/icons/${option.icon}`" alt="arrow" />
           <div class="answer-icon" v-if="option.icon"></div>
@@ -75,16 +74,19 @@ export default defineComponent({
   },
   methods: {
     selectOption(option: any) {
+      console.log(option);
       if (option.tag as String) {
         this.answers.push(option.tag);
       }
       this.moveToNextQuestion(option);
     },
-    submitTextAnswer(input: any) {
+    submitTextAnswer(input: string) {
+      const datastore = useDatastore();
       if (input.trim() !== '') {
-        this.answers.push(input.trim());
-        this.input = input;
-        this.moveToNextQuestion();
+        this.answers = ['medisch professional', 'Tilburg', 'Eenzaamheid'];
+        this.saveAnswers();
+        datastore.setMessage(input);
+        this.$router.push('/chat');
       } else {
         alert('Please enter your answer.');
       }
@@ -100,8 +102,6 @@ export default defineComponent({
         } else {
           if (this.currentQuestionIndex === 3) {
             this.saveAnswers();
-            console.log('Onboarding process completed');
-            console.log(this.answers);
             this.navigateToDashboard();
           } else {
             this.currentQuestionIndex++;
@@ -109,8 +109,6 @@ export default defineComponent({
         }
       } else {
         this.saveAnswers();
-        console.log('Onboarding process completed');
-        console.log(this.answers);
         this.navigateToDashboard();
       }
     },

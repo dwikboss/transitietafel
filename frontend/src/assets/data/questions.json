@@ -54,7 +54,30 @@
         "id": 3,
         "question_lead": "Fijn dat ik je kan helpen.",
         "question": "Waar woon je?",
-        "type": "text"
+        "type": "multiple-choice",
+        "options": [
+            {
+                "text": "Tilburg",
+                "icon": null,
+                "color": "#1977A4",
+                "size": "regular",
+                "tag": "tilburg"
+            },
+            {
+                "text": "Oosterhout",
+                "icon": null,
+                "color": "#1977A4",
+                "size": "regular",
+                "tag": "oosterhout"
+            },
+            {
+                "text": "Etten-Leur",
+                "icon": null,
+                "color": "#1977A4",
+                "size": "regular",
+                "tag": "etten-leur"
+            }
+        ]
     },
     {
         "id": 4,
