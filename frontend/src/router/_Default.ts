@@ -2,6 +2,7 @@ import { PageName } from '@/utils/_Constants';
 import { createRouter, createWebHistory } from 'vue-router';
 import Home from '../views/Home.vue';
 import Dashboard from '../views/Dashboard.vue';
+import Chat from '../views/Chat.vue';
 
 const routes = [
   {
@@ -13,6 +14,11 @@ const routes = [
     path: '/dashboard',
     name: PageName.DASHBOARD,
     component: Dashboard,
+  },
+  {
+    path: '/chat',
+    name: PageName.CHAT,
+    component: Chat,
   },
 ];
 
