@@ -77,5 +77,11 @@
                 "tag": "eenzaamheid"
             }
         ]
+    },
+    {
+        "id": 5,
+        "question_lead": "We starten direct.",
+        "question": "Wat is je vraag?",
+        "type": "text"
     }
 ]
