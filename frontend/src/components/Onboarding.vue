@@ -37,7 +37,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useDatastore } from '../store/Datastore';
-import { useRouter } from 'vue-router'
 import questions from '@/assets/data/questions.json';
 import InputField from './InputField.vue';
 

@@ -2,7 +2,7 @@
     <div class="main-input" :style="{borderStyle: borderStyle}">
         <img v-if="iconVisible" src="/images/icons/icon_search.png" alt="search_icon">
         <input v-model="input" type="text" :placeholder="placeHolder">
-        <button @click="submit"><span class="button-text">Verzend</span><img src="@/assets/images/icons/icon_arrow.png"
+        <button @click="submit"><span class="button-text">Verstuur</span><img src="@/assets/images/icons/icon_arrow.png"
                 alt="arrow"></button>
     </div>
 </template>
@@ -28,7 +28,7 @@ export default defineComponent({
                 this.$emit('submit', this.input.trim());
                 this.input = '';
             } else {
-                alert('Please enter your answer.');
+                alert('Typ iets in.');
             }
         }
     }
