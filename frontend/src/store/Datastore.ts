@@ -5,7 +5,6 @@ export const useDatastore = defineStore({
 
     state: () => ({
         persona: [] as Array<string>,
-        messageHistory: [] as Array<string>,
         lastMessage: '' as String,
     }),
 
@@ -24,11 +23,9 @@ export const useDatastore = defineStore({
         setPersona(persona: Array<string>) {
             this.persona = persona;
             localStorage.setItem("persona", JSON.stringify(persona));
-            console.log(this.persona);
         },
         setMessage(message: string) {
             this.lastMessage = message;
-            this.messageHistory.push(message);
         },
     },
 });

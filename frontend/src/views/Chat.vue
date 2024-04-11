@@ -39,7 +39,7 @@ export default defineComponent({
   },
   data() {
     return {
-      chatHistory: [] as Chat[],
+      chatHistory: [] as any,
       chatIdentifiers: [] as ChatIdent[],
       error: null as string | null,
     };
@@ -50,23 +50,36 @@ export default defineComponent({
   methods: {
     async fetchChat(input?: string) {
       const datastore = useDatastore();
+      let storagePersona;
+      let persona;
+
       try {
-        const persona = {
-          description: datastore.getPersona[0],
-          location: datastore.getPersona[1],
-          interests: [datastore.getPersona[2]],
-        };
+        if (localStorage.getItem('persona')) {
+          console.log();
+          storagePersona = JSON.parse(localStorage.getItem('persona') || '{}');
+
+          persona = {
+            description: storagePersona[0],
+            location: storagePersona[1],
+            interests: [storagePersona[2]],
+          };
+        } else {
+          persona = {
+            description: datastore.getPersona[0],
+            location: datastore.getPersona[1],
+            interests: [datastore.getPersona[2]],
+          };
+        }
 
         let question: string;
         if (input) {
-            question = input;
+          question = input;
         } else {
-            question = datastore.getLatestMessage;
+          question = datastore.getLatestMessage;
         }
 
         this.addChat(question, true);
         const messageHistory: string[] = [];
-        // Array.from(datastore.getMessageHistory)
 
         const response = await axios.post('https://avoord-transitietafel-api-acc.lwdev.nl/api/question', {
           question,
@@ -95,8 +108,15 @@ export default defineComponent({
         date,
         interest,
       };
+
+      const storedChatHistory = localStorage.getItem('message-history');
+      if (storedChatHistory) {
+        this.chatHistory = JSON.parse(storedChatHistory);
+      } else {
+        this.chatHistory = [];
+      }
       this.chatHistory.push(chat);
-      console.log(this.chatHistory);
+      localStorage.setItem('message-history', JSON.stringify(this.chatHistory));
     },
     addChat(message: string, user: boolean) {
       const chat: ChatIdent = {
@@ -104,7 +124,6 @@ export default defineComponent({
         user,
       };
       this.chatIdentifiers.push(chat);
-      console.log(this.chatIdentifiers);
     },
   },
 });
