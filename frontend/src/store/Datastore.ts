@@ -5,20 +5,20 @@ export const useDatastore = defineStore({
 
     state: () => ({
         persona: [] as Array<string>,
-        lastMessage: '' as String,
-        chatHistory: [] as any,
+        lastMessage: '' as string,
+        chatHistory: [] as any[],
     }),
 
     getters: {
-        getPersona() {
-            return this.persona as any;
+        getPersona(): string[] {
+            return this.persona;
         },
-        getLatestMessage() {
-            return this.lastMessage as any;
+        getLatestMessage(): string {
+            return this.lastMessage;
         },
-        getChatHistory() {
+        getChatHistory(): any[] | null {
             if (localStorage.getItem('message-history')) {
-                return JSON.parse(localStorage.getItem('message-history')  || '{}') as any;
+                return JSON.parse(localStorage.getItem('message-history')  || '{}') as any[];
             } else {
                 return null;
             }
