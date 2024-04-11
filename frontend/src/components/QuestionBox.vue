@@ -21,7 +21,7 @@ import { defineComponent } from 'vue';
 export default defineComponent({
     name: 'QuestionBox',
     props: {
-        currentQuestion: Object
+        currentQuestion: Object as any
     },
     computed: {
         formattedQuestionLead() {

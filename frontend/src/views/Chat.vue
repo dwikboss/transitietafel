@@ -1,6 +1,7 @@
 <template>
   <div class="page chat">
     <AppHeader fontColor="white" />
+    <BackButton color="white" borderColor="#ffffff73" @clickBack="goPrevious" />
     <div class="full-width">
       <div class="chat-container">
         <div class="chat-heading">
@@ -28,6 +29,7 @@ import type { ChatIdent } from '../interfaces/_IChatIdent';
 import AppHeader from '../components/AppHeader.vue';
 import InputField from '../components/InputField.vue';
 import ChatMessage from '../components/ChatMessage.vue';
+import BackButton from '../components/BackButton.vue';
 import axios from 'axios';
 
 export default defineComponent({
@@ -36,6 +38,7 @@ export default defineComponent({
     AppHeader,
     InputField,
     ChatMessage,
+    BackButton,
   },
   data() {
     return {
@@ -88,7 +91,8 @@ export default defineComponent({
         });
 
         const answer = response.data.answer;
-        const date = new Date().toISOString();
+        const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+        const date = new Date().toLocaleDateString('nl-NL', options);
         const interest = persona.interests[0];
 
         this.addChat(answer, false);
@@ -118,6 +122,9 @@ export default defineComponent({
         user,
       };
       this.chatIdentifiers.push(chat);
+    },
+    goPrevious() {
+      this.$router.push('/dashboard');
     },
   },
 });
@@ -184,13 +191,13 @@ export default defineComponent({
         display: flex;
         flex-direction: column;
         gap: 20px;
+        flex-grow: 1;
       }
       .input-area {
         border-top: 1px solid rgb(215, 215, 215);
         display: flex;
         flex-direction: column;
         justify-content: flex-end;
-        height: 20%;
         padding: 20px;
       }
     }

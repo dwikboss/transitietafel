@@ -11,14 +11,14 @@ export const useDatastore = defineStore({
 
     getters: {
         getPersona() {
-            return this.persona;
+            return this.persona as any;
         },
         getLatestMessage() {
-            return this.lastMessage;
+            return this.lastMessage as any;
         },
         getChatHistory() {
             if (localStorage.getItem('message-history')) {
-                return JSON.parse(localStorage.getItem('message-history')  || '{}');
+                return JSON.parse(localStorage.getItem('message-history')  || '{}') as any;
             } else {
                 return null;
             }

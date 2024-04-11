@@ -11,6 +11,37 @@
       </div>
     </div>
     <div class="dashboard-main">
+      <div class="mobile-dashboard">
+        <h3>Ga direct naar:</h3>
+        <div class="mobile-menu-item" @click="openMobileSection()">
+          <div class="menu-item-content">
+            <p>Mijn vragen</p>
+            <p>{{ menuItemCount('questions') }} zoekvraag</p>
+          </div>
+          <img src="/images/icons/icon_arrow_black.png" alt="arrow" />
+        </div>
+        <div class="mobile-menu-item">
+          <div class="menu-item-content">
+            <p>Veelgestelde vragen</p>
+            <p>{{ menuItemCount('faq') }} vragen</p>
+          </div>
+          <img src="/images/icons/icon_arrow_black.png" alt="arrow" />
+        </div>
+        <div class="mobile-menu-item">
+          <div class="menu-item-content">
+            <p>Artikelen</p>
+            <p>{{ menuItemCount('articles') }} artikelen</p>
+          </div>
+          <img src="/images/icons/icon_arrow_black.png" alt="arrow" />
+        </div>
+        <div class="mobile-menu-item">
+          <div class="menu-item-content">
+            <p>Instanties & contacten</p>
+            <p>{{ menuItemCount('contacts') }} resultaten</p>
+          </div>
+          <img src="/images/icons/icon_arrow_black.png" alt="arrow" />
+        </div>
+      </div>
       <div class="body-sections">
         <div class="question container">
           <div class="container-menu">
@@ -18,18 +49,25 @@
             <div class="btn organizations">Veelgestelde vragen</div>
           </div>
           <div class="container-content">
-            <div class="questions">
+            <div v-if="chatHistory.length > 0" class="questions">
               <div class="question" v-for="(question, index) in chatHistory" :key="index">
                 <div class="question-body">
                   <p class="question-title">{{ question.question }}</p>
                   <div class="question-info">
                     <p>{{ question.interest }}</p>
+                    <span>•</span>
+                    <p>{{ question.date }}</p>
                   </div>
                 </div>
                 <img src="/images/icons/icon_chevron_right.png" alt="chevron-right" />
               </div>
+              <button class="btn-more">Bekijk meer</button>
             </div>
-            <button class="btn-more">Bekijk meer artikelen</button>
+            <div v-else class="noresults">
+              <img src="/images/icons/icon_noresults.png" alt="icon_noresults" />
+              <p>No results</p>
+              <p>Geen resultaten</p>
+            </div>
           </div>
         </div>
         <div class="info container">
@@ -49,7 +87,7 @@
                   <img src="/images/icons/icon_chevron_right.png" alt="chevron-right" />
                 </div>
               </div>
-              <button class="btn-more">Bekijk meer artikelen</button>
+              <button class="btn-more">Bekijk meer</button>
             </div>
             <div v-else class="noresults">
               <img src="/images/icons/icon_noresults.png" alt="icon_noresults" />
@@ -68,6 +106,7 @@ import { defineComponent } from 'vue';
 import { useDatastore } from '../store/Datastore';
 import type { Article } from '../interfaces/_IArticle';
 import type { FAQ } from '../interfaces/_IFAQ';
+import type { PastQuestion } from '../interfaces/_IPastQuestion';
 import AppHeader from '../components/AppHeader.vue';
 import InputField from '../components/InputField.vue';
 import axios from 'axios';
@@ -82,7 +121,7 @@ export default defineComponent({
     return {
       articles: [] as Article[],
       faq: [] as FAQ[],
-      chatHistory: [] as any,
+      chatHistory: [] as PastQuestion[],
     };
   },
   mounted() {
@@ -91,6 +130,29 @@ export default defineComponent({
     this.fetchChatHistory();
   },
   methods: {
+    openMobileSection(){
+      
+    },
+    menuItemCount(type: String) {
+      let count;
+      switch (type) {
+        case 'questions':
+          count = this.chatHistory.length;
+          break;
+        case 'faq':
+          count = 0;
+          break;
+        case 'articles':
+          count = this.articles.length;
+          break;
+        case 'contacts':
+          count = 0;
+          break;
+        default:
+          break;
+      }
+      return count;
+    },
     async fetchChatHistory() {
       const datastore = useDatastore();
       const chatHistory = datastore.getChatHistory;
@@ -169,9 +231,50 @@ export default defineComponent({
 .page.dashboard {
   background-color: var(--light-blue);
   min-height: 100vh;
+  font-family: 'Poppins';
 
   .dashboard-main {
     padding: var(--unit);
+
+    .mobile-dashboard {
+      display: none;
+      flex-direction: column;
+      gap: 15px;
+
+      @media (max-width: 767.98px) {
+        display: flex;
+      }
+
+      h3 {
+        font-weight: 600;
+        margin-top: 25px
+      }
+
+      .mobile-menu-item {
+        background-color: white;
+        padding: 20px;
+        border-radius: var(--unit-s);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        img {
+          height: 18px;
+        }
+
+        p:first-of-type {
+          font-size: 18px;
+          font-weight: 700;
+          margin-bottom: 10px
+        }
+
+        p:nth-of-type(2) {
+          font-size: 16px;
+          font-weight: 500;
+          color: var(--orange);
+        }
+      }
+    }
 
     .body-sections {
       display: flex;
@@ -226,28 +329,44 @@ export default defineComponent({
             }
           }
 
-          .articles, .questions {
+          .articles,
+          .questions {
             margin-top: 15px;
             display: flex;
             flex-direction: column;
             gap: var(--unit);
 
             .question {
-              display:flex;
+              display: flex;
               justify-content: space-between;
               align-items: center;
 
-              .question-title {
-                font-size: 21px;
-              }
+              .question-body {
+                width: 75%;
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
 
+                .question-info {
+                  display: flex;
+                  gap: 15px;
+                  color: var(--blue);
+                  font-family: 'Poppins';
+                  font-weight: 500;
+                }
 
-              img {
-                height: 30px;
+                .question-title {
+                  font-size: 21px;
+                }
+
+                img {
+                  height: 30px;
+                }
               }
             }
 
-            .article, .question {
+            .article,
+            .question {
               background-color: white;
               padding: var(--unit);
               border-radius: 8px;
@@ -277,7 +396,7 @@ export default defineComponent({
               .article-body {
                 display: flex;
                 justify-content: space-between;
-                align-items: flex-end;
+                align-items: center;
 
                 p {
                   width: 75%;
@@ -301,6 +420,18 @@ export default defineComponent({
             padding: 8px;
           }
         }
+
+        @media (max-width: 991.98px) {
+          width: 100%;
+        }
+      }
+
+      @media (max-width: 991.98px) {
+        flex-direction: column;
+      }
+
+      @media (max-width: 767.98px) {
+        display: none;
       }
     }
   }
@@ -310,12 +441,20 @@ export default defineComponent({
     background: radial-gradient(circle, rgba(34, 137, 186, 1) 0%, rgba(14, 107, 137, 1) 100%);
     min-height: 45vh;
 
+    @media (max-width: 767.98px) {
+      min-height: 33vh;
+    }
+
     .free-question {
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       gap: 35px;
+
+      @media (max-width: 767.98px) {
+        margin-top: 25px;
+      }
 
       .main-input {
         width: 50vw;

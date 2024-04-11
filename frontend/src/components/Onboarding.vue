@@ -1,9 +1,6 @@
 <template>
   <div class="onboarding">
-    <div v-if="currentQuestionIndex > 0" class="btn-back" @click="goPrevious">
-      <img src="/images/icons/icon_arrow_back.png" alt="arrow_back" />
-      Vorige stap
-    </div>
+    <BackButton v-if="currentQuestionIndex > 0" color="black" borderColor="#d7d7d7" @clickBack="goPrevious"/>
     <div class="question-box">
       <div class="assistant-image"></div>
       <div class="question-text">
@@ -43,6 +40,7 @@ import { defineComponent } from 'vue';
 import { useDatastore } from '../store/Datastore';
 import questions from '@/assets/data/questions.json';
 import InputField from './InputField.vue';
+import BackButton from './BackButton.vue';
 
 export default defineComponent({
   name: 'Onboarding',
@@ -57,6 +55,7 @@ export default defineComponent({
   },
   components: {
     InputField,
+    BackButton
   },
   computed: {
     currentQuestion() {
