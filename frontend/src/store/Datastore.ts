@@ -6,6 +6,7 @@ export const useDatastore = defineStore({
     state: () => ({
         persona: [] as Array<string>,
         lastMessage: '' as String,
+        chatHistory: [] as any,
     }),
 
     getters: {
@@ -15,8 +16,12 @@ export const useDatastore = defineStore({
         getLatestMessage() {
             return this.lastMessage;
         },
-        getMessageHistory() {
-            return this.messageHistory;
+        getChatHistory() {
+            if (localStorage.getItem('message-history')) {
+                return JSON.parse(localStorage.getItem('message-history')  || '{}');
+            } else {
+                return null;
+            }
         }
     },
     actions: {
@@ -27,5 +32,17 @@ export const useDatastore = defineStore({
         setMessage(message: string) {
             this.lastMessage = message;
         },
+        setHistory(chat: any) {
+            const storedChatHistory = localStorage.getItem('message-history');
+            if (storedChatHistory) {
+                this.chatHistory = JSON.parse(storedChatHistory);
+            } else {
+                this.chatHistory = [];
+            }
+
+            this.chatHistory.push(chat);
+            localStorage.setItem('message-history', JSON.stringify(this.chatHistory));
+            console.log(JSON.parse(localStorage.getItem('message-history')  || '{}'));
+        }
     },
 });

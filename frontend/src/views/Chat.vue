@@ -102,6 +102,7 @@ export default defineComponent({
       console.error('Error fetching chat data:', error);
     },
     updateChatHistory(question: string, answer: string, date: string, interest: string) {
+      const datastore = useDatastore();
       const chat: Chat = {
         question,
         answer,
@@ -109,14 +110,7 @@ export default defineComponent({
         interest,
       };
 
-      const storedChatHistory = localStorage.getItem('message-history');
-      if (storedChatHistory) {
-        this.chatHistory = JSON.parse(storedChatHistory);
-      } else {
-        this.chatHistory = [];
-      }
-      this.chatHistory.push(chat);
-      localStorage.setItem('message-history', JSON.stringify(this.chatHistory));
+      datastore.setHistory(chat);
     },
     addChat(message: string, user: boolean) {
       const chat: ChatIdent = {

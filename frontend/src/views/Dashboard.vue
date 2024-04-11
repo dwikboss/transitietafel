@@ -14,20 +14,19 @@
       <div class="body-sections">
         <div class="question container">
           <div class="container-menu">
-            <div class="btn articles active">Mijn vragen</div>
+            <div class="btn questions active">Mijn vragen</div>
             <div class="btn organizations">Veelgestelde vragen</div>
           </div>
           <div class="container-content">
-            <div class="articles">
-              <div class="article" v-for="(article, index) in articles" :key="index">
-                <div class="article-heading">
-                  <p class="article-title">{{ article.title }}</p>
-                  <span>•</span><a :href="article.url" class="article-link">Bronvermelding</a>
+            <div class="questions">
+              <div class="question" v-for="(question, index) in chatHistory" :key="index">
+                <div class="question-body">
+                  <p class="question-title">{{ question.question }}</p>
+                  <div class="question-info">
+                    <p>{{ question.interest }}</p>
+                  </div>
                 </div>
-                <div class="article-body">
-                  <p>{{ article.paragraph }}</p>
-                  <img src="/images/icons/icon_chevron_right.png" alt="chevron-right" />
-                </div>
+                <img src="/images/icons/icon_chevron_right.png" alt="chevron-right" />
               </div>
             </div>
             <button class="btn-more">Bekijk meer artikelen</button>
@@ -46,7 +45,7 @@
                   <span>•</span><a :href="article.url" class="article-link">Bronvermelding</a>
                 </div>
                 <div class="article-body">
-                  <p>{{ article.paragraph }}</p>
+                  <p>{{ article.summary.webpages_summary }}</p>
                   <img src="/images/icons/icon_chevron_right.png" alt="chevron-right" />
                 </div>
               </div>
@@ -65,7 +64,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted } from 'vue';
+import { defineComponent } from 'vue';
 import { useDatastore } from '../store/Datastore';
 import type { Article } from '../interfaces/_IArticle';
 import type { FAQ } from '../interfaces/_IFAQ';
@@ -83,13 +82,24 @@ export default defineComponent({
     return {
       articles: [] as Article[],
       faq: [] as FAQ[],
+      chatHistory: [] as any,
     };
   },
   mounted() {
     this.fetchArticles();
     this.fetchFAQ();
+    this.fetchChatHistory();
   },
   methods: {
+    async fetchChatHistory() {
+      const datastore = useDatastore();
+      const chatHistory = datastore.getChatHistory;
+
+      if (chatHistory) {
+        this.chatHistory = chatHistory;
+      }
+      console.log(this.chatHistory);
+    },
     async fetchArticles() {
       const datastore = useDatastore();
       let storagePersona;
@@ -216,13 +226,28 @@ export default defineComponent({
             }
           }
 
-          .articles {
+          .articles, .questions {
             margin-top: 15px;
             display: flex;
             flex-direction: column;
             gap: var(--unit);
 
-            .article {
+            .question {
+              display:flex;
+              justify-content: space-between;
+              align-items: center;
+
+              .question-title {
+                font-size: 21px;
+              }
+
+
+              img {
+                height: 30px;
+              }
+            }
+
+            .article, .question {
               background-color: white;
               padding: var(--unit);
               border-radius: 8px;
